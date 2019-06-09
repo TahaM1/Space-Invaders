@@ -22,7 +22,7 @@ class Bullet{
 
   void drawBullet(){
   
-    if(img == null){
+    if(img == null){ //draws rectangle if image wasnt provided
     
       rect(pos.x, pos.y, siz.x, siz.y);
       
@@ -44,7 +44,7 @@ class Bullet{
   }
   
   void hitDetection(ArrayList<Bullet> list, PVector comparedPos, PVector comparedVel, PVector comparedSiz){
-  
+    //checks if bullet is touching enemy then removes itself from bulletlist 
     if(abs(pos.x - comparedPos.x) < comparedSiz.x/2 + siz.x/2){
       if(abs(pos.y - comparedPos.y) < comparedSiz.y/2 + siz.y/2){
       

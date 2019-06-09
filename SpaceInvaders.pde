@@ -35,8 +35,8 @@ void setup(){
     pPos = new PVector(width/2, height/1.25);
     pVel = new PVector(0, 0);
     pSiz = new PVector(20, 20);
-    P1 = new Player(pPos, pVel, pSiz, bulletWaitTime);
-    P2 = new Player(pPos, pVel, pSiz, bulletWaitTime);
+    P1 = new Player(pPos.copy(), pVel.copy(), pSiz.copy(), bulletWaitTime);
+    P2 = new Player(pPos.copy(), pVel.copy(), pSiz.copy(), bulletWaitTime);
     
   //keys
     keys = new ArrayList<Character>(4);
@@ -58,9 +58,9 @@ void draw(){
     time++;  
     
     //player
-    P1.update(keys);
-    P2.update(keys);
-  
+    P1.update();
+    P2.update();
+   
     //bullet
     for(int i = 0; i < bulletList.size(); i++){
     
@@ -74,67 +74,79 @@ void draw(){
   
   
   //CHECK 
+    //player
+    P1.checkBoundries();
+    P2.checkBoundries();
+    P1.checkControls(keys);
+    P2.checkControls(keys);
     
-  
   //DRAW 
-    //Player
-      P1.drawPlayer();
-      P2.drawPlayer();
+    
     //bullet
       for(Bullet bullet : bulletList){
       
         bullet.drawBullet();
         
       }
+    //Player
+      P1.drawPlayer();
+      P2.drawPlayer();
     
 }
 
 
 void keyPressed(){
+    
+    char keypressed = key; 
   
+    //checks if arrow keys are pressed then maps them to keys
     if(keyCode == UP){
-      keys.add('i');
+      keypressed = 'i';
     } 
     else if(keyCode == DOWN){
-      keys.add('k');
+      keypressed = 'k';
     }
     else if(keyCode == RIGHT){
-      keys.add('l');
+      keypressed = 'l';
     } 
     else if(keyCode == LEFT){
-      keys.add('j');
+      keypressed = 'j';
     }
-    else {
-      keys.add(key);
+    
+    //adds keypressed to keys list if not already in it 
+    if(!keys.contains(keypressed)){
+      keys.add(keypressed);
+    
     }
 
 }
 
 void keyReleased(){
-
-  
+    char keyreleased = key;
+    
+    //checks if arrows keys are pressed
     if(keyCode == UP){
-      keys.remove('i');
+       keyreleased = 'i';  
     } 
     else if(keyCode == DOWN){
-      keys.remove('k');
+      keyreleased = 'k';
     }
     else if(keyCode == RIGHT){
-      keys.remove('l');
+      keyreleased = 'l';
     } 
     else if(keyCode == LEFT){
-      keys.remove('j');
+      keyreleased = 'j';
     }
-    else {
-      for(int i = 0; i < keys.size(); i ++){
+    
+    //checks if the key released is in the list then removes it 
+    for(int i = 0; i < keys.size(); i++){
       
-        if(key == i){
-        
-          keys.remove(i);
-          break;
-        }
-      
+      if(keyreleased == keys.get(i)){
+        keys.remove(i);
+        break;
       }
+      
     }
+       
   
 }

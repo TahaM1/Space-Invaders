@@ -48,11 +48,9 @@ class Player{
     
   }
   
-  void update(ArrayList<Character> keys){
+  void update(){
   
     time++;
-    
-    checkControls(keys);
       
     pos.add(vel);
     
@@ -72,7 +70,7 @@ class Player{
       if(keys.contains(definedkeys[0].charAt(0))){
          
          if(time > bulletTime){
-           bulletList.add(new Bullet(pPos.copy(), bulletVel, bulletSiz));
+           bulletList.add(new Bullet(pos.copy(), bulletVel, bulletSiz));
            time = 0;
          }
          
@@ -80,4 +78,29 @@ class Player{
   
   }
   
+  
+  void checkBoundries(){
+  
+    if(pos.x > width - siz.x/2){
+    
+       pos.x = width - siz.x/2;
+    
+    } else if (pos.x < siz.x/2){
+    
+      pos.x = siz.x/2;
+      
+    }
+    
+    if(pos.y > height - siz.y/2){
+    
+       pos.y = height - siz.y/2;
+    
+    } else if (pos.y < siz.y/2){
+    
+      pos.y = siz.y/2;
+      
+    }
+    
+    
+  }
 }
