@@ -25,7 +25,7 @@ class Player{
    this.vel = vel;
    this.siz = siz;
    
-   if(img != null){
+   if(img != null){ 
      img.resize((int)siz.x, (int)siz.y);
    }
    this.img = img;
@@ -56,20 +56,20 @@ class Player{
     
   }
   
-  void checkControls(ArrayList<Character> keys){
-      if(keys.contains(definedkeys[3].charAt(0))){
+  void checkControls(ArrayList<Character> keys){ //checks if the any of the set keys for this player are pressed
+      if(keys.contains(definedkeys[3].charAt(0))){ //moves right
         vel.x = 1;
         
       } 
-      else if (keys.contains(definedkeys[1].charAt(0))){
-        vel.x = -1;
+      else if (keys.contains(definedkeys[1].charAt(0))){ //moves left
+        vel.x = -1; 
       } else { 
         vel.x = 0;
       }
       
-      if(keys.contains(definedkeys[0].charAt(0))){
+      if(keys.contains(definedkeys[0].charAt(0))){ //shoots bullets
          
-         if(time > bulletTime){
+         if(time > bulletTime){ //checks if a certain amount of time has passed before shooting another bullet
            bulletList.add(new Bullet(pos.copy(), bulletVel, bulletSiz));
            time = 0;
          }
