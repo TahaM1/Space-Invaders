@@ -8,6 +8,7 @@
     PVector pPos, pVel, pSiz;
     Player P1;
     Player P2;
+    ArrayList<Player> playerList;
   //Bullet 
     ArrayList<Bullet> bulletList;
     int bulletWaitTime;
@@ -19,7 +20,8 @@
     
   //Game variables  
     int time, score;
-
+  //Enemy
+    ArrayList<Enemy> enemyList;
 
 void setup(){
   size(800, 600);
@@ -29,14 +31,17 @@ void setup(){
   //Bullet
     bulletList = new ArrayList<Bullet>();
     bulletSiz = new PVector(5, -5);
-    bulletVel = new PVector(0, -1);
-    bulletWaitTime = 60;
+    bulletVel = new PVector(0, -5);
+    bulletWaitTime = 30;
   //Player
     pPos = new PVector(width/2, height/1.25);
     pVel = new PVector(0, 0);
     pSiz = new PVector(20, 20);
-    P1 = new Player(pPos.copy(), pVel.copy(), pSiz.copy(), bulletWaitTime);
-    P2 = new Player(pPos.copy(), pVel.copy(), pSiz.copy(), bulletWaitTime);
+    P1 = new Player(new PVector(width/4, height/1.25), pVel.copy(), pSiz.copy(), bulletWaitTime);
+    P2 = new Player(new PVector(width/4*3, height/1.25), pVel.copy(), pSiz.copy(), bulletWaitTime);
+    playerList = new ArrayList<Player>();
+    playerList.add(P1);
+    playerList.add(P2);
     
   //keys
     keys = new ArrayList<Character>(4);
@@ -48,6 +53,13 @@ void setup(){
   //game  
     time = bulletWaitTime;
     score = 0;
+  //enemy
+    enemyList = new ArrayList<Enemy>();
+    for(int i = 0; i < 20; i++){
+      enemyList.add(new Enemy(new PVector(100 + (i * 25), 100), new PVector(1, 0), new PVector(20, 20),enemyList));
+      enemyList.add(new Enemy(new PVector(100 + (i * 25), 200), new PVector(1, 0), new PVector(20, 20),enemyList));
+
+    }
 }
 
 void draw(){
@@ -60,17 +72,18 @@ void draw(){
     //player
     P1.update();
     P2.update();
+    
+    //enemy
+      for( Enemy enemy : enemyList){
+        enemy.update();
+      }
    
     //bullet
     for(int i = 0; i < bulletList.size(); i++){
-    
-      if(bulletList.get(i).outsideScreen()){
-        bulletList.remove(i);
-      } else {
         bulletList.get(i).updateBullet();
-      }
-      
     }
+      
+    
   
   
   //CHECK 
@@ -79,6 +92,23 @@ void draw(){
     P2.checkBoundries();
     P1.checkControls(keys);
     P2.checkControls(keys);
+    
+    //bullet
+      //boundries 
+        for(int i = 0; i < bulletList.size(); i++){
+          if(bulletList.get(i).outsideScreen()){
+            bulletList.remove(i);
+          }
+          
+        }
+    
+    //enemy
+      //bullet hit detections
+        for(int i = 0; i < enemyList.size(); i++){
+            
+            enemyList.get(i).hitDetection(bulletList);
+            println(enemyList.size());
+        }
     
   //DRAW 
     
@@ -91,7 +121,10 @@ void draw(){
     //Player
       P1.drawPlayer();
       P2.drawPlayer();
-    
+    //enemy
+      for( Enemy enemy : enemyList){
+        enemy.draw();
+      }
 }
 
 
