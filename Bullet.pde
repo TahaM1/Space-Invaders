@@ -43,20 +43,24 @@ class Bullet{
   
   }
   
-  void hitDetection(ArrayList<Bullet> list, PVector comparedPos, PVector comparedVel, PVector comparedSiz){
-    //checks if bullet is touching enemy then removes itself from bulletlist 
-    if(abs(pos.x - comparedPos.x) < comparedSiz.x/2 + siz.x/2){
-      if(abs(pos.y - comparedPos.y) < comparedSiz.y/2 + siz.y/2){
+  //void hitDetection(ArrayList<Bullet> list, ArrayList<Enemy> enemyList){
+  //  //checks if bullet is touching enemy then removes itself from bulletlist 
+  //  for(int i = 0; i < enemyList.size(); i++){
+  //    if(abs(pos.x - enemyList.get(i).pos.x) < enemyList.get(i).siz.x/2 + siz.x/2){
+  //      if(abs(pos.y - enemyList.get(i).pos.y) < enemyList.get(i).siz.y/2 + siz.y/2){
       
-        pos.sub(vel);
-        list.remove(this);
+  //        pos.sub(vel);
+  //        list.remove(this);
+  //        enemyList.remove(i);
         
-      }
+  //      }
     
-    }
+  //    }
+  //  }
     
     
-  }
+    
+  //}
   
   boolean outsideScreen(){
   
