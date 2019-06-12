@@ -3,6 +3,7 @@ class Enemy{
   PVector pos, vel, siz;
   PImage img;
   ArrayList<Enemy> list;
+  int gapBetweenEnemies = 10;
  
    Enemy(PVector pos, PVector vel, PVector siz, ArrayList<Enemy> list){
     this(pos, vel, siz, list, null);
@@ -21,12 +22,13 @@ class Enemy{
   }
   
   void update(){
-  
-    pos.add(vel);
-    if(pos.x < (width/8) || pos.x > (width/8)*7){
-      pos.y += siz.x*2;
-      vel.x *= -1;
+    
+    if(time % 50 == 0){
+      pos.add(vel);
+      
     }
+    
+    
     
   }
   
@@ -63,5 +65,29 @@ class Enemy{
     
   }
   
+  void changeDirection(){
+    
+    
+    if(pos.x < (width/8) - siz.x/2){
+        float offset = abs((width/8 - siz.x/2) - pos.x); 
+        
+        for(int i = 0; i < list.size(); i++){
+          list.get(i).pos.x += offset;
+          list.get(i).pos.y += siz.x*2;  
+          list.get(i).vel.x *= -1;
+        }
+       
+      }
+      else if(pos.x > (width/8)*7 + siz.x/2){
+        float offset = abs((width/8*7 - siz.x/2) - pos.x); 
+        
+         for(int i = 0; i < list.size(); i++){
+          list.get(i).pos.x -= offset;
+          list.get(i).pos.y += siz.x*2;  
+          list.get(i).vel.x *= -1;
+        }
+        
+      }
   
+  }
 }
