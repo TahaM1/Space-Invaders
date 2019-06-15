@@ -25,9 +25,7 @@ class Player{
    this.vel = vel;
    this.siz = siz;
    
-   if(img != null){ 
-     img.resize((int)siz.x, (int)siz.y);
-   }
+  
    this.img = img;
    this.bulletTime = bulletTime;
    time = bulletTime;
@@ -58,11 +56,11 @@ class Player{
   
   void checkControls(ArrayList<Character> keys){ //checks if the any of the set keys for this player are pressed
       if(keys.contains(definedkeys[3].charAt(0))){ //moves right
-        vel.x = 1;
+        vel.x = 3;
         
       } 
       else if (keys.contains(definedkeys[1].charAt(0))){ //moves left
-        vel.x = -1; 
+        vel.x = -3; 
       } else { 
         vel.x = 0;
       }
@@ -70,7 +68,25 @@ class Player{
       if(keys.contains(definedkeys[0].charAt(0))){ //shoots bullets
          
          if(time > bulletTime){ //checks if a certain amount of time has passed before shooting another bullet
-           bulletList.add(new Bullet(pos.copy(), bulletVel, bulletSiz));
+           if(firingMode == 1){
+             bulletList.add(new Bullet(pos.copy(), bulletVel, bulletSiz, loadImage("playerbullet.png"), bulletList));
+             bulletList.add(new Bullet(pos.copy(), new PVector(1, -5), bulletSiz, loadImage("playerbullet.png"), bulletList));
+             bulletList.add(new Bullet(pos.copy(),new PVector(-1, -5), bulletSiz, loadImage("playerbullet.png"), bulletList));
+
+           } else if(firingMode == 2){
+            bulletList.add(new Bullet(pos.copy().sub(new PVector(10, 0)), bulletVel, bulletSiz, loadImage("playerbullet.png"), bulletList));
+             bulletList.add(new Bullet(pos.copy(), bulletVel, bulletSiz, loadImage("playerbullet.png"), bulletList));
+             bulletList.add(new Bullet(pos.copy().sub(new PVector(-10, 0)), bulletVel, bulletSiz, loadImage("playerbullet.png"), bulletList));
+
+           }
+           
+           else{
+           bulletList.add(new Bullet(pos.copy(), bulletVel, bulletSiz, loadImage("playerbullet.png"), bulletList));
+           
+           }
+           
+           shoot.rewind(); //plays sound effect
+           shoot.play();
            time = 0;
          }
          
@@ -79,15 +95,15 @@ class Player{
   }
   
   
-  void checkBoundries(){
+  void checkBoundries(){ //restricts pos
   
-    if(pos.x > width - siz.x/2){
+    if(pos.x > width/10*9 - siz.x/2){
     
-       pos.x = width - siz.x/2;
+       pos.x = width/10*9 - siz.x/2;
     
-    } else if (pos.x < siz.x/2){
+    } else if (pos.x < width/10 + siz.x/2){
     
-      pos.x = siz.x/2;
+      pos.x = width/10 + siz.x/2;
       
     }
     
@@ -103,4 +119,25 @@ class Player{
     
     
   }
+  
+  void hitDetection(ArrayList<Bullet> bulletList){
+    //checks if bullet is touching player then removes itself from bulletlist 
+    for(int i = 0; i < bulletList.size(); i++){
+     // println(abs(pos.x - bulletList.get(i).pos.x) + " " +(bulletList.get(i).siz.x/2 + siz.x/2));
+      if(abs(pos.x - bulletList.get(i).pos.x) < bulletList.get(i).siz.x/2 + siz.x/2){
+        if(abs(pos.y - bulletList.get(i).pos.y) < bulletList.get(i).siz.y/2 + siz.y/2){
+      
+          pos.sub(vel);
+          playerList.remove(this);
+          bulletList.remove(i);
+          
+        }
+    
+      }
+    }
+    
+    
+    
+  }
+  
 }
